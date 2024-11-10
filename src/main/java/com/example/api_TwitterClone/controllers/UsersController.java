@@ -19,7 +19,7 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping("/create")
-    public ResponseEntity<Users> createUser(@RequestBody Users users) {
+    public ResponseEntity<Users> createUser(@RequestBody Users users) throws Exception {
         Users createdUser = usersService.createUser(users);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }

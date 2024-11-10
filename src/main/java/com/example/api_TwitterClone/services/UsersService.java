@@ -11,7 +11,13 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
 
-    public Users createUser(Users users) {
+    public Users createUser(Users users) throws Exception {
+        if(usersRepository.findByEmail(users.getEmail()).isPresent())
+            throw new Exception("This email still exists");
+
+        if(usersRepository.findByUsername(users.getUsername()).isPresent())
+            throw new Exception("This username still exists");
+
         return usersRepository.save(users);
     }
 }
