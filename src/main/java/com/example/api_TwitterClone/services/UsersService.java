@@ -28,6 +28,11 @@ public class UsersService {
 
         if (users.isEmpty()) throw new Exception("No users found");
 
-        return usersRepository.findAll();
+        return users;
+    }
+
+    public Users findUserById(Integer id) throws Exception {
+        return usersRepository.findById(id).orElseThrow(
+                () -> new Exception("Could not find user with this id"));
     }
 }

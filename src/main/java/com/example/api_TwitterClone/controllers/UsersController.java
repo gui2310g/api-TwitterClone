@@ -28,5 +28,11 @@ public class UsersController {
         List<Users> users = usersService.findAllUsers();
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Users> findUserById(@PathVariable Integer id) throws Exception {
+        Users user = usersService.findUserById(id);
+        return ResponseEntity.ok(user);
+    }
 }
 
