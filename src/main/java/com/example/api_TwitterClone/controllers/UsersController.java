@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -22,6 +21,12 @@ public class UsersController {
     public ResponseEntity<Users> createUser(@RequestBody Users users) throws Exception {
         Users createdUser = usersService.createUser(users);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Users>> findAllUsers() throws Exception {
+        List<Users> users = usersService.findAllUsers();
+        return ResponseEntity.ok(users);
     }
 }
 

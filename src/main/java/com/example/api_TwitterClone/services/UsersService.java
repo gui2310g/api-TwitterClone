@@ -5,6 +5,8 @@ import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UsersService {
@@ -19,5 +21,13 @@ public class UsersService {
             throw new Exception("This username still exists");
 
         return usersRepository.save(users);
+    }
+
+    public List<Users> findAllUsers() throws Exception {
+        List<Users> users = usersRepository.findAll();
+
+        if (users.isEmpty()) throw new Exception("No users found");
+
+        return usersRepository.findAll();
     }
 }
