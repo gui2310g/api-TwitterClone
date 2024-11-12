@@ -35,4 +35,12 @@ public class UsersService {
         return usersRepository.findById(id).orElseThrow(
                 () -> new Exception("Could not find user with this id"));
     }
+
+    public List<Users> searchUsersByUsername(String username) throws Exception {
+        List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(username);
+
+        if(users.isEmpty()) throw new Exception("Could not find users with this username");
+
+        return users;
+    }
 }
