@@ -43,4 +43,21 @@ public class UsersService {
 
         return users;
     }
+
+    public Users updateUser(Users users, Integer id) throws Exception {
+        Users updatedUser = usersRepository.findById(id)
+                .orElseThrow(() -> new Exception("Could no find this user to update"));
+
+        if(usersRepository.findByEmail(updatedUser.getEmail()).isPresent())
+            throw new Exception("This email still exists");
+
+        if(usersRepository.findByUsername(updatedUser.getUsername()).isPresent())
+            throw new Exception("This username still exists");
+
+        if(updatedUser.getEmail() != null) updatedUser.setEmail(users.getEmail());
+        if(updatedUser.getUsername() != null) updatedUser.setUsername(users.getUsername());
+        if(updatedUser.getPassword() != null) updatedUser.setPassword(users.getPassword());
+
+        return usersRepository.save(updatedUser);
+    }
 }
