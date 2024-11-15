@@ -3,6 +3,7 @@ package com.example.api_TwitterClone.services;
 import com.example.api_TwitterClone.entities.Users;
 import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public class UsersService {
 
     private final UsersRepository usersRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     public Users createUser(Users users) throws Exception {
         if(usersRepository.findByEmail(users.getEmail()).isPresent())
@@ -48,11 +51,20 @@ public class UsersService {
         Users updatedUser = usersRepository.findById(id)
                 .orElseThrow(() -> new Exception("Could no find this user to update"));
 
-        if(usersRepository.findByEmail(updatedUser.getEmail()).isPresent())
-            throw new Exception("This email still exists");
+        if (usersRepository.findByEmail(users.getEmail()).isPresent()
+                && !updatedUser.getEmail().equals(users.getEmail())) {
+            throw new Exception("This email is already in use by another user");
+        }
 
-        if(usersRepository.findByUsername(updatedUser.getUsername()).isPresent())
-            throw new Exception("This username still exists");
+        if (usersRepository.findByUsername(users.getUsername()).isPresent()
+                && !updatedUser.getUsername().equals(users.getUsername())) {
+            throw new Exception("This username is already in use by another user");
+        }
+
+        if (users.getPassword() != null
+                && passwordEncoder.matches(users.getPassword(), updatedUser.getPassword())) {
+            throw new Exception("You are already using this password");
+        }
 
         if(updatedUser.getEmail() != null) updatedUser.setEmail(users.getEmail());
         if(updatedUser.getUsername() != null) updatedUser.setUsername(users.getUsername());
