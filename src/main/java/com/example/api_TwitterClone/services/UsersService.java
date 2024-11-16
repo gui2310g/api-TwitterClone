@@ -23,6 +23,8 @@ public class UsersService {
         if(usersRepository.findByUsername(users.getUsername()).isPresent())
             throw new Exception("This username still exists");
 
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
+
         return usersRepository.save(users);
     }
 
