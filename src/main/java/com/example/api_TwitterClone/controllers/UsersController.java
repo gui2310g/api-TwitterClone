@@ -1,5 +1,6 @@
 package com.example.api_TwitterClone.controllers;
 
+import com.example.api_TwitterClone.dto.UserDto;
 import com.example.api_TwitterClone.entities.Users;
 import com.example.api_TwitterClone.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping("/create")
-    public ResponseEntity<Users> createUser(@RequestBody Users users) throws Exception {
-        Users createdUser = usersService.createUser(users);
+    public ResponseEntity<Users> createUser(@RequestBody UserDto userDto) throws Exception {
+        Users createdUser = usersService.createUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

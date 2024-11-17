@@ -1,8 +1,12 @@
 package com.example.api_TwitterClone.services;
 
+import com.example.api_TwitterClone.dto.UserDto;
 import com.example.api_TwitterClone.entities.Users;
+import com.example.api_TwitterClone.mapper.UserMapper;
 import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +20,19 @@ public class UsersService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Users createUser(Users users) throws Exception {
-        if(usersRepository.findByEmail(users.getEmail()).isPresent())
+    private final UserMapper userMapper;
+
+    public Users createUser(UserDto userDto) throws Exception {
+        if(usersRepository.findByEmail(userDto.getEmail()).isPresent())
             throw new Exception("This email still exists");
 
-        if(usersRepository.findByUsername(users.getUsername()).isPresent())
+        if(usersRepository.findByUsername(userDto.getUsername()).isPresent())
             throw new Exception("This username still exists");
 
-        users.setPassword(passwordEncoder.encode(users.getPassword()));
+        Users user = userMapper.toEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        return usersRepository.save(users);
+        return usersRepository.save(user);
     }
 
     public List<Users> findAllUsers() throws Exception {

@@ -1,6 +1,6 @@
 package com.example.api_TwitterClone.controllers;
 
-import com.example.api_TwitterClone.dto.LoginRequest;
+import com.example.api_TwitterClone.dto.LoginDto;
 import com.example.api_TwitterClone.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,8 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    private ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws Exception {
-        String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+    private ResponseEntity<String> login(@RequestBody LoginDto loginDto) throws Exception {
+        String token = authService.login(loginDto.getEmail(), loginDto.getPassword());
         return ResponseEntity.ok(token);
     }
 }
