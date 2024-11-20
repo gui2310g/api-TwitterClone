@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
+
+    private String getUsername(Authentication authentication) { return authentication.getName(); }
 
     @PostMapping("/create")
     public ResponseEntity<Users> createUser(@RequestBody UserDto userDto) throws Exception {
@@ -40,6 +43,15 @@ public class UsersController {
     public ResponseEntity<List<Users>> searchUsersByUsername(@RequestParam String username) throws Exception {
         List<Users> users = usersService.searchUsersByUsername(username);
         return ResponseEntity.ok(users);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Users> updateUser(
+            @RequestBody UserDto userDto,
+            Authentication authentication
+    ) throws Exception {
+        Users updatedUser = usersService.updateUser(userDto, getUsername(authentication));
+        return ResponseEntity.ok(updatedUser);
     }
 }
 
