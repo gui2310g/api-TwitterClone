@@ -3,6 +3,8 @@ package com.example.api_TwitterClone.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -29,6 +31,16 @@ public class Users {
 
     @Column(name = "background", nullable = false)
     private String background;
+
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Tweets> tweets;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TweetLikes> likes;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TweetsComments> comments;
 
     public Users() {}
 }
