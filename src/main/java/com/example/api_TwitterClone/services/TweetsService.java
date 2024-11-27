@@ -9,6 +9,8 @@ import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TweetsService {
@@ -28,5 +30,13 @@ public class TweetsService {
         Tweets savedTweet = tweetsRepository.save(tweets);
 
         return tweetsMapper.toDto(savedTweet);
+    }
+
+    public List<TweetsDto> findAllTweets() throws Exception {
+        List<Tweets> tweets = tweetsRepository.findAll();
+
+        if (tweets.isEmpty()) throw new Exception("No tweets found");
+
+        return tweets.stream().map(tweetsMapper::toDto).toList();
     }
 }
