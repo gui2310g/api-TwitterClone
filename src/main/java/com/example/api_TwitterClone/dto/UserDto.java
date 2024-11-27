@@ -4,10 +4,11 @@ import lombok.Data;
 
 @Data
 public class UserDto {
-    private final String username;
-    private final String email;
-    private final String password;
-    private final String name;
-    private final String avatar;
-    private final String background;
+    private Integer Id;
+    private String username;
+    private String email;
+    private String password;
+    private String name;
+    private String avatar;
+    private String background;
 }

@@ -29,4 +29,11 @@ public class AuthService {
 
         return jwtService.generateToken(authentication);
     }
+
+    public Integer getAuthenticatedUserId(Authentication authentication) {
+        String username = authentication.getName();
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
+    }
 }

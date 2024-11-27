@@ -1,6 +1,6 @@
 package com.example.api_TwitterClone.services;
 
-import com.example.api_TwitterClone.dto.TweetsDTO;
+import com.example.api_TwitterClone.dto.TweetsDto;
 import com.example.api_TwitterClone.entities.Tweets;
 import com.example.api_TwitterClone.entities.Users;
 import com.example.api_TwitterClone.mapper.TweetsMapper;
@@ -19,7 +19,7 @@ public class TweetsService {
 
     private final TweetsMapper tweetsMapper;
 
-    public TweetsDTO createTweets(TweetsDTO tweetsDTO, Integer userId) throws Exception {
+    public TweetsDto createTweets(TweetsDto tweetsDTO, Integer userId) throws Exception {
         Users users = usersRepository.findById(userId)
                 .orElseThrow(() -> new Exception("Cannot find a user to create a tweet"));
 

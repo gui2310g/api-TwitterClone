@@ -2,6 +2,7 @@ package com.example.api_TwitterClone.controllers;
 
 import com.example.api_TwitterClone.dto.UserDto;
 import com.example.api_TwitterClone.entities.Users;
+import com.example.api_TwitterClone.services.AuthService;
 import com.example.api_TwitterClone.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,12 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    private String getUsername(Authentication authentication) { return authentication.getName(); }
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/create")
-    public ResponseEntity<Users> createUser(@RequestBody UserDto userDto) throws Exception {
-        Users createdUser = usersService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) throws Exception {
+        UserDto createdUser = usersService.createUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
@@ -46,11 +48,12 @@ public class UsersController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Users> updateUser(
+    public ResponseEntity<UserDto> updateUser(
             @RequestBody UserDto userDto,
             Authentication authentication
     ) throws Exception {
-        Users updatedUser = usersService.updateUser(userDto, getUsername(authentication));
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        UserDto updatedUser = usersService.updateUser(userDto, userId);
         return ResponseEntity.ok(updatedUser);
     }
 }
