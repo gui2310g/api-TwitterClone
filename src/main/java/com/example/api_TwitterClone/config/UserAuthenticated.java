@@ -1,4 +1,4 @@
-package com.example.api_TwitterClone.infra;
+package com.example.api_TwitterClone.config;
 
 import com.example.api_TwitterClone.entities.Users;
 import lombok.AllArgsConstructor;

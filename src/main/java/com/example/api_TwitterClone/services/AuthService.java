@@ -1,7 +1,7 @@
 package com.example.api_TwitterClone.services;
 
 import com.example.api_TwitterClone.entities.Users;
-import com.example.api_TwitterClone.infra.JwtService;
+import com.example.api_TwitterClone.config.JwtService;
 import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AuthService {
+
     private PasswordEncoder passwordEncoder;
 
     private JwtService jwtService;

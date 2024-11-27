@@ -1,4 +1,4 @@
-package com.example.api_TwitterClone.infra;
+package com.example.api_TwitterClone.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
