@@ -31,4 +31,10 @@ public class TweetsController {
         TweetsDto createdTweet = tweetsService.createTweets(tweetsDTO, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTweet);
     }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<TweetsDto>> findAllTweets() throws Exception {
+        List<TweetsDto> tweets = tweetsService.findAllTweets();
+        return ResponseEntity.ok(tweets);
+    }
 }
