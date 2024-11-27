@@ -39,4 +39,11 @@ public class TweetsService {
 
         return tweets.stream().map(tweetsMapper::toDto).toList();
     }
+
+    public TweetsDto findTweetsById(Integer id) throws Exception {
+       Tweets tweets  = tweetsRepository.findById(id)
+               .orElseThrow(() -> new Exception("Could not find a tweet with this id"));
+
+       return tweetsMapper.toDto(tweets);
+    }
 }

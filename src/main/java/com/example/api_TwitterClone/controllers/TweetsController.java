@@ -37,4 +37,10 @@ public class TweetsController {
         List<TweetsDto> tweets = tweetsService.findAllTweets();
         return ResponseEntity.ok(tweets);
     }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<TweetsDto> findTweetSById(@PathVariable Integer id) throws Exception {
+        TweetsDto tweet = tweetsService.findTweetsById(id);
+        return ResponseEntity.ok(tweet);
+    }
 }
