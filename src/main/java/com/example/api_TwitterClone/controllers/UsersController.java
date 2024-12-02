@@ -23,7 +23,7 @@ public class UsersController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) throws Exception {
         UserDto createdUser = usersService.createUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);

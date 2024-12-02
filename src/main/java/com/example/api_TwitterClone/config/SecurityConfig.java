@@ -54,7 +54,10 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated())
                 .httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()));
+                .oauth2ResourceServer(
+                        conf -> conf.jwt(Customizer.withDefaults()
+                        )
+                );
         return httpSecurity.build();
     }
 

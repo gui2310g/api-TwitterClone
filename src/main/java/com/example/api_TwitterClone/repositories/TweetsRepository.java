@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface TweetsRepository extends JpaRepository<Tweets, Integer> {
     List<Tweets> findByUsersId(Integer userId);
 
-    Optional<Tweets> searchTweetsByText(String text);
+    List<Tweets> findByTextContainingIgnoreCase(String text);
 }

@@ -46,4 +46,12 @@ public class TweetsService {
 
        return tweetsMapper.toDto(tweets);
     }
+
+    public List<TweetsDto> searchTweets(String text) throws Exception {
+        List<Tweets> tweets = tweetsRepository.findByTextContainingIgnoreCase(text);
+
+        if (tweets.isEmpty()) throw new Exception("Could not find tweets with this text");
+
+        return tweets.stream().map(tweetsMapper::toDto).toList();
+    }
 }

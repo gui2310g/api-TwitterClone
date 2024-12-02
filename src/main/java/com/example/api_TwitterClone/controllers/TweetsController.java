@@ -22,7 +22,7 @@ public class TweetsController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<TweetsDto> createTweets(
             @RequestBody TweetsDto tweetsDTO,
             Authentication authentication
@@ -42,5 +42,11 @@ public class TweetsController {
     public ResponseEntity<TweetsDto> findTweetSById(@PathVariable Integer id) throws Exception {
         TweetsDto tweet = tweetsService.findTweetsById(id);
         return ResponseEntity.ok(tweet);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<TweetsDto>> searchTweets(@RequestParam String text) throws Exception {
+        List<TweetsDto> tweets = tweetsService.searchTweets(text);
+        return ResponseEntity.ok(tweets);
     }
 }
