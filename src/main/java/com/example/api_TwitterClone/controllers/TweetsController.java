@@ -39,7 +39,7 @@ public class TweetsController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<TweetsDto> findTweetSById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<TweetsDto> findTweetsById(@PathVariable Integer id) throws Exception {
         TweetsDto tweet = tweetsService.findTweetsById(id);
         return ResponseEntity.ok(tweet);
     }
@@ -47,6 +47,12 @@ public class TweetsController {
     @GetMapping("/search")
     public ResponseEntity<List<TweetsDto>> searchTweets(@RequestParam String text) throws Exception {
         List<TweetsDto> tweets = tweetsService.searchTweets(text);
+        return ResponseEntity.ok(tweets);
+    }
+
+    @GetMapping("/findByUser/{userId}")
+    public ResponseEntity<List<TweetsDto>> findTweetsByUserId(@PathVariable Integer userId) throws Exception {
+        List<TweetsDto> tweets = tweetsService.findTweetsByUsersId(userId);
         return ResponseEntity.ok(tweets);
     }
 }
