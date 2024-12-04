@@ -47,12 +47,12 @@ public class UsersService {
         return userMapper.toDto(user);
     }
 
-    public List<Users> searchUsersByUsername(String username) throws Exception {
+    public List<UserDto> searchUsersByUsername(String username) throws Exception {
         List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(username);
 
         if (users.isEmpty()) throw new Exception("Could not find users with this username");
 
-        return users;
+        return users.stream().map(userMapper::toDto).toList();
     }
 
     public UserDto updateUser(UserDto userDto, Integer id) throws Exception {

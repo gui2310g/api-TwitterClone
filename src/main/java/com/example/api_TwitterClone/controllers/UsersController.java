@@ -42,8 +42,8 @@ public class UsersController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Users>> searchUsersByUsername(@RequestParam String username) throws Exception {
-        List<Users> users = usersService.searchUsersByUsername(username);
+    public ResponseEntity<List<UserDto>> searchUsersByUsername(@RequestParam String username) throws Exception {
+        List<UserDto> users = usersService.searchUsersByUsername(username);
         return ResponseEntity.ok(users);
     }
 
