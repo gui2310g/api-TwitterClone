@@ -56,12 +56,23 @@ public class TweetsService {
     }
 
     public List<TweetsDto> findTweetsByUsersId(Integer userId) throws Exception {
-        usersRepository.findById(userId).orElseThrow(() -> new Exception("Can't find a user with this id"));
-
         List<Tweets> tweets = tweetsRepository.findByUsersId(userId);
 
         if (tweets.isEmpty()) throw new Exception("No tweets found for this user");
 
         return tweets.stream().map(tweetsMapper::toDto).toList();
+    }
+
+    public TweetsDto updateTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws Exception {
+        Tweets tweets = tweetsRepository.findById(id)
+                .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+
+        if (!tweets.getUsers().getId().equals(userId)) throw new Exception("You can only update your own tweets");
+        if(tweetsDto.getBanner() != null) tweets.setBanner(tweetsDto.getBanner());
+        if(tweetsDto.getText() != null) tweets.setText(tweetsDto.getText());
+
+        Tweets updatedTweet = tweetsRepository.save(tweets);
+
+        return tweetsMapper.toDto(updatedTweet);
     }
 }

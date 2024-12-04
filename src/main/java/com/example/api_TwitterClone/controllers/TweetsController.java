@@ -55,4 +55,16 @@ public class TweetsController {
         List<TweetsDto> tweets = tweetsService.findTweetsByUsersId(userId);
         return ResponseEntity.ok(tweets);
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<TweetsDto> updateTweets(
+            @RequestBody TweetsDto tweetsDTO,
+            @PathVariable Integer id,
+            Authentication authentication
+    ) throws Exception {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        TweetsDto updatedTweet = tweetsService.updateTweets(tweetsDTO, id, userId);
+        return ResponseEntity.ok(updatedTweet);
+    }
 }
+    
