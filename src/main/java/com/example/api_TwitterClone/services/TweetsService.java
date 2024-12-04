@@ -68,8 +68,8 @@ public class TweetsService {
                 .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
 
         if (!tweets.getUsers().getId().equals(userId)) throw new Exception("You can only update your own tweets");
-        if(tweetsDto.getBanner() != null) tweets.setBanner(tweetsDto.getBanner());
-        if(tweetsDto.getText() != null) tweets.setText(tweetsDto.getText());
+        if (tweetsDto.getBanner() != null) tweets.setBanner(tweetsDto.getBanner());
+        if (tweetsDto.getText() != null) tweets.setText(tweetsDto.getText());
 
         Tweets updatedTweet = tweetsRepository.save(tweets);
 

@@ -33,16 +33,18 @@ public class UsersService {
         return userMapper.toDto(savedUser);
     }
 
-    public List<Users> findAllUsers() throws Exception {
+    public List<UserDto> findAllUsers() throws Exception {
         List<Users> users = usersRepository.findAll();
 
         if (users.isEmpty()) throw new Exception("No users found");
 
-        return users;
+        return users.stream().map(userMapper::toDto).toList();
     }
 
-    public Users findUserById(Integer id) throws Exception {
-        return usersRepository.findById(id).orElseThrow(() -> new Exception("Could not find user with this id"));
+    public UserDto findUserById(Integer id) throws Exception {
+        Users user = usersRepository.findById(id).orElseThrow(() -> new Exception("Could not find user with this id"));
+
+        return userMapper.toDto(user);
     }
 
     public List<Users> searchUsersByUsername(String username) throws Exception {
@@ -60,7 +62,7 @@ public class UsersService {
         if (usersRepository.findByEmail(userDto.getEmail()).isPresent() && !user.getEmail().equals(userDto.getEmail()))
             throw new Exception("This email is already in use by another user");
 
-        if(userDto.getUsername() != null) throw new Exception("You can't update the username");
+        if (userDto.getUsername() != null) throw new Exception("You can't update the username");
 
         if (userDto.getPassword() != null && passwordEncoder.matches(userDto.getPassword(), user.getPassword()))
             throw new Exception("You are already using this password");

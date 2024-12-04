@@ -30,14 +30,14 @@ public class UsersController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Users>> findAllUsers() throws Exception {
-        List<Users> users = usersService.findAllUsers();
+    public ResponseEntity<List<UserDto>> findAllUsers() throws Exception {
+        List<UserDto> users = usersService.findAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Users> findUserById(@PathVariable Integer id) throws Exception {
-        Users user = usersService.findUserById(id);
+    public ResponseEntity<UserDto> findUserById(@PathVariable Integer id) throws Exception {
+        UserDto user = usersService.findUserById(id);
         return ResponseEntity.ok(user);
     }
 
