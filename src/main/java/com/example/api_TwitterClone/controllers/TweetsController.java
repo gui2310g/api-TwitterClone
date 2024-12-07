@@ -66,5 +66,16 @@ public class TweetsController {
         TweetsDto updatedTweet = tweetsService.updateTweets(tweetsDTO, id, userId);
         return ResponseEntity.ok(updatedTweet);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<TweetsDto> deleteTweets(TweetsDto tweetsDTO,
+            @PathVariable Integer id,
+            Authentication authentication
+    ) throws Exception {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        TweetsDto deletedTweet = tweetsService.deleteTweets(tweetsDTO, id, userId);
+        return ResponseEntity.ok(deletedTweet);
+    }
+    
 }
     

@@ -75,4 +75,15 @@ public class TweetsService {
 
         return tweetsMapper.toDto(updatedTweet);
     }
+
+    public TweetsDto deleteTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws Exception {
+        Tweets tweets = tweetsRepository.findById(id)
+                .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+
+        if (!tweets.getUsers().getId().equals(userId)) throw new Exception("You can only delete your own tweets");
+
+       tweetsRepository.delete(tweets);
+
+       return tweetsMapper.toDto(tweets);
+    }
 }
