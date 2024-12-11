@@ -113,4 +113,19 @@ public class TweetsService {
 
         return tweetsCommentsMapper.toDto(savedComments);
     }
+
+    public TweetsCommentsDTO deleteComments(Integer tweetsId, Integer commentId, Integer userId) throws Exception {
+        Tweets tweets = tweetsRepository.findById(tweetsId)
+                .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+
+        TweetsComments tweetsComments = tweetsCommentsRepository.findById(commentId)
+                .orElseThrow(() -> new Exception("Can't find a comment with this id"));
+
+        if (!tweetsComments.getUsers().getId().equals(userId))
+            throw new Exception("You can only delete your own comments");
+
+        tweetsCommentsRepository.delete(tweetsComments);
+
+        return tweetsCommentsMapper.toDto(tweetsComments);
+    }
 }

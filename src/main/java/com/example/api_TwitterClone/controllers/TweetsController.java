@@ -89,5 +89,16 @@ public class TweetsController {
         TweetsCommentsDTO tweetWithComments = tweetsService.addComments(tweetId, userId, tweetsComments);
         return ResponseEntity.ok(tweetWithComments);
     }
+
+    @DeleteMapping("/{tweetId}/{commentId}/comments")
+    public ResponseEntity<TweetsCommentsDTO> deleteComments(
+            @PathVariable Integer tweetId,
+            @PathVariable Integer commentId,
+            Authentication authentication
+    ) throws Exception {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        TweetsCommentsDTO tweetWithComments = tweetsService.deleteComments(tweetId, commentId, userId);
+        return ResponseEntity.ok(tweetWithComments);
+    }
 }
     
