@@ -20,5 +20,4 @@ public class TweetLikes {
     @JoinColumn(name = "tweet_id", nullable = false)
     private Tweets tweet;
 
-    public TweetLikes() {}
 }

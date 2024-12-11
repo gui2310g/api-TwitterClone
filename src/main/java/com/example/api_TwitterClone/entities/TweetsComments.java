@@ -2,6 +2,9 @@ package com.example.api_TwitterClone.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,8 +23,16 @@ public class TweetsComments {
     private Users users;
 
     @ManyToOne
-    @JoinColumn(name = "tweet_id", nullable = false)
+    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
     private Tweets tweet;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    @Column(name = "date", updatable = false)
+    private Date date;
+
+    @PrePersist
+    protected void onCreate() { if(this.date == null) this.date = new Date(); }
 
     public TweetsComments() {}
 }

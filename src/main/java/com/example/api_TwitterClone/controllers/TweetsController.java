@@ -1,7 +1,8 @@
 package com.example.api_TwitterClone.controllers;
 
+import com.example.api_TwitterClone.dto.TweetsCommentsDTO;
 import com.example.api_TwitterClone.dto.TweetsDto;
-import com.example.api_TwitterClone.entities.Tweets;
+import com.example.api_TwitterClone.entities.TweetsComments;
 import com.example.api_TwitterClone.services.AuthService;
 import com.example.api_TwitterClone.services.TweetsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,8 @@ public class TweetsController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<TweetsDto> deleteTweets(TweetsDto tweetsDTO,
+    public ResponseEntity<TweetsDto> deleteTweets(
+            TweetsDto tweetsDTO,
             @PathVariable Integer id,
             Authentication authentication
     ) throws Exception {
@@ -76,6 +78,6 @@ public class TweetsController {
         TweetsDto deletedTweet = tweetsService.deleteTweets(tweetsDTO, id, userId);
         return ResponseEntity.ok(deletedTweet);
     }
-    
+
 }
     
