@@ -1,7 +1,9 @@
 package com.example.api_TwitterClone.services;
 
+import com.example.api_TwitterClone.dto.TweetsCommentsDTO;
 import com.example.api_TwitterClone.dto.TweetsDto;
 import com.example.api_TwitterClone.entities.Tweets;
+import com.example.api_TwitterClone.entities.TweetsComments;
 import com.example.api_TwitterClone.entities.Users;
 import com.example.api_TwitterClone.mapper.TweetsCommentsMapper;
 import com.example.api_TwitterClone.mapper.TweetsMapper;
@@ -18,6 +20,10 @@ import java.util.List;
 public class TweetsService {
 
     private final TweetsRepository tweetsRepository;
+
+    private final TweetsCommentsRepository tweetsCommentsRepository;
+
+    private final TweetsCommentsMapper tweetsCommentsMapper;
 
     private final UsersRepository usersRepository;
 
@@ -87,5 +93,24 @@ public class TweetsService {
        tweetsRepository.delete(tweets);
 
        return tweetsMapper.toDto(tweets);
+    }
+
+    public TweetsCommentsDTO addComments(
+            Integer tweetsId,
+            Integer userId,
+            TweetsCommentsDTO tweetsCommentsDTO
+    ) throws Exception {
+        Tweets tweets = tweetsRepository.findById(tweetsId)
+               .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+
+        Users users = usersRepository.findById(userId)
+               .orElseThrow(() -> new Exception("Cannot find a user to add a comment"));
+
+        TweetsComments tweetsComments = tweetsCommentsMapper.toEntity(tweetsCommentsDTO);
+        tweetsComments.setTweet(tweets);
+        tweetsComments.setUsers(users);
+        TweetsComments savedComments = tweetsCommentsRepository.save(tweetsComments);
+
+        return tweetsCommentsMapper.toDto(savedComments);
     }
 }

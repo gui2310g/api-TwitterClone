@@ -79,5 +79,15 @@ public class TweetsController {
         return ResponseEntity.ok(deletedTweet);
     }
 
+    @PostMapping("/{tweetId}/comments")
+    public ResponseEntity<TweetsCommentsDTO> addComments(
+            @PathVariable Integer tweetId,
+            @RequestBody TweetsCommentsDTO tweetsComments,
+            Authentication authentication
+    ) throws Exception {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        TweetsCommentsDTO tweetWithComments = tweetsService.addComments(tweetId, userId, tweetsComments);
+        return ResponseEntity.ok(tweetWithComments);
+    }
 }
     
