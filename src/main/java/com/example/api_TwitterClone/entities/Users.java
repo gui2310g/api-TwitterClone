@@ -32,12 +32,8 @@ public class Users {
     @Column(name = "background", nullable = false)
     private String background;
 
-
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tweets> tweets;
-
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TweetLikes> likes;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TweetsComments> comments;

@@ -25,8 +25,5 @@ public class Tweets {
     private String banner;
 
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TweetLikes> likes;
-
-    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TweetsComments> comments;
 }

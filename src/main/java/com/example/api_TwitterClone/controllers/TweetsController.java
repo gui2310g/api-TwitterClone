@@ -2,7 +2,6 @@ package com.example.api_TwitterClone.controllers;
 
 import com.example.api_TwitterClone.dto.TweetsCommentsDTO;
 import com.example.api_TwitterClone.dto.TweetsDto;
-import com.example.api_TwitterClone.entities.TweetsComments;
 import com.example.api_TwitterClone.services.AuthService;
 import com.example.api_TwitterClone.services.TweetsService;
 import org.springframework.beans.factory.annotation.Autowired;
