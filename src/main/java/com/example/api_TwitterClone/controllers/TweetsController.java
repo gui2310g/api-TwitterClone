@@ -89,6 +89,14 @@ public class TweetsController {
         return ResponseEntity.ok(tweetWithComments);
     }
 
+    @GetMapping("/findAll/{tweetId}/comments")
+    public ResponseEntity<List<TweetsCommentsDTO>> findAllCommentsByTweetsId(
+            @PathVariable Integer tweetId
+    ) throws Exception {
+        List<TweetsCommentsDTO> comments = tweetsService.findAllCommentsByTweetsId(tweetId);
+        return ResponseEntity.ok(comments);
+    }
+
     @DeleteMapping("/{tweetId}/{commentId}/comments")
     public ResponseEntity<TweetsCommentsDTO> deleteComments(
             @PathVariable Integer tweetId,

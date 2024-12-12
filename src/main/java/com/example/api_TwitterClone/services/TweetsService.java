@@ -114,6 +114,14 @@ public class TweetsService {
         return tweetsCommentsMapper.toDto(savedComments);
     }
 
+    public List<TweetsCommentsDTO> findAllCommentsByTweetsId(Integer tweetsId) throws Exception {
+        List<TweetsComments> tweetsComments = tweetsCommentsRepository.findByTweetId(tweetsId);
+
+        if (tweetsComments.isEmpty()) throw new Exception("No comments found for this tweet");
+
+        return tweetsComments.stream().map(tweetsCommentsMapper::toDto).toList();
+    }
+
     public TweetsCommentsDTO deleteComments(Integer tweetsId, Integer commentId, Integer userId) throws Exception {
         Tweets tweets = tweetsRepository.findById(tweetsId)
                 .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
