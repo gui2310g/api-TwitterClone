@@ -97,6 +97,17 @@ public class TweetsController {
         return ResponseEntity.ok(comments);
     }
 
+    @PutMapping("/update/{commentId}/comments")
+    public ResponseEntity<TweetsCommentsDTO> updateComments(
+            @PathVariable Integer commentId,
+            @RequestBody TweetsCommentsDTO tweetsComments,
+            Authentication authentication
+    ) throws Exception {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        TweetsCommentsDTO updatedComment = tweetsService.updateComments(commentId, userId, tweetsComments);
+        return ResponseEntity.ok(updatedComment);
+    }
+
     @DeleteMapping("/{tweetId}/{commentId}/comments")
     public ResponseEntity<TweetsCommentsDTO> deleteComments(
             @PathVariable Integer tweetId,

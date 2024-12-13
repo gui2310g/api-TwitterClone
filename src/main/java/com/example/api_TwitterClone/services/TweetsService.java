@@ -122,6 +122,24 @@ public class TweetsService {
         return tweetsComments.stream().map(tweetsCommentsMapper::toDto).toList();
     }
 
+    public TweetsCommentsDTO updateComments(
+            Integer commentId,
+            Integer userId,
+            TweetsCommentsDTO tweetsCommentsDTO
+    ) throws Exception {
+        TweetsComments tweetsComments = tweetsCommentsRepository.findById(commentId)
+                   .orElseThrow(() -> new Exception("Can't find a comment with this id"));
+
+        if (!tweetsComments.getUsers().getId().equals(userId))
+            throw new Exception("You can only update your own comments");
+
+        if(tweetsComments.getText() != null) tweetsComments.setText(tweetsCommentsDTO.getText());
+
+        TweetsComments updatedComment = tweetsCommentsRepository.save(tweetsComments);
+
+        return tweetsCommentsMapper.toDto(updatedComment);
+    }
+
     public TweetsCommentsDTO deleteComments(Integer tweetsId, Integer commentId, Integer userId) throws Exception {
         Tweets tweets = tweetsRepository.findById(tweetsId)
                 .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
