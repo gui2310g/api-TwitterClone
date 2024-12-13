@@ -2,6 +2,7 @@ package com.example.api_TwitterClone.services;
 
 import com.example.api_TwitterClone.entities.Users;
 import com.example.api_TwitterClone.config.JwtService;
+import com.example.api_TwitterClone.exceptions.AuthException;
 import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,11 +20,11 @@ public class AuthService {
 
     private final UsersRepository usersRepository;
 
-    public String login(String email, String password) throws Exception {
+    public String login(String email, String password) throws AuthException {
         Users users = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new Exception("Could not find a user with this email"));
+                .orElseThrow(() -> new AuthException("Could not find a user with this email"));
 
-        if (!passwordEncoder.matches(password, users.getPassword())) throw new Exception("Invalid password");
+        if (!passwordEncoder.matches(password, users.getPassword())) throw new AuthException("Invalid password");
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(users.getUsername(), password);
 

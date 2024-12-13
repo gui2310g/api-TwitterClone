@@ -5,6 +5,7 @@ import com.example.api_TwitterClone.dto.TweetsDto;
 import com.example.api_TwitterClone.entities.Tweets;
 import com.example.api_TwitterClone.entities.TweetsComments;
 import com.example.api_TwitterClone.entities.Users;
+import com.example.api_TwitterClone.exceptions.TweetsException;
 import com.example.api_TwitterClone.mapper.TweetsCommentsMapper;
 import com.example.api_TwitterClone.mapper.TweetsMapper;
 import com.example.api_TwitterClone.repositories.TweetsCommentsRepository;
@@ -29,9 +30,9 @@ public class TweetsService {
 
     private final TweetsMapper tweetsMapper;
 
-    public TweetsDto createTweets(TweetsDto tweetsDTO, Integer userId) throws Exception {
+    public TweetsDto createTweets(TweetsDto tweetsDTO, Integer userId) throws TweetsException {
         Users users = usersRepository.findById(userId)
-                .orElseThrow(() -> new Exception("Cannot find a user to create a tweet"));
+                .orElseThrow(() -> new TweetsException("Cannot find a user to create a tweet"));
 
         Tweets tweets = tweetsMapper.toEntity(tweetsDTO);
         tweets.setUsers(users);
@@ -40,42 +41,42 @@ public class TweetsService {
         return tweetsMapper.toDto(savedTweet);
     }
 
-    public List<TweetsDto> findAllTweets() throws Exception {
+    public List<TweetsDto> findAllTweets() throws TweetsException {
         List<Tweets> tweets = tweetsRepository.findAll();
 
-        if (tweets.isEmpty()) throw new Exception("No tweets found");
+        if (tweets.isEmpty()) throw new TweetsException("No tweets found");
 
         return tweets.stream().map(tweetsMapper::toDto).toList();
     }
 
-    public TweetsDto findTweetsById(Integer id) throws Exception {
+    public TweetsDto findTweetsById(Integer id) throws TweetsException {
        Tweets tweets  = tweetsRepository.findById(id)
-               .orElseThrow(() -> new Exception("Could not find a tweet with this id"));
+               .orElseThrow(() -> new TweetsException("Could not find a tweet with this id"));
 
        return tweetsMapper.toDto(tweets);
     }
 
-    public List<TweetsDto> searchTweets(String text) throws Exception {
+    public List<TweetsDto> searchTweets(String text) throws TweetsException {
         List<Tweets> tweets = tweetsRepository.findByTextContainingIgnoreCase(text);
 
-        if (tweets.isEmpty()) throw new Exception("Could not find tweets with this text");
+        if (tweets.isEmpty()) throw new TweetsException("Could not find tweets with this text");
 
         return tweets.stream().map(tweetsMapper::toDto).toList();
     }
 
-    public List<TweetsDto> findTweetsByUsersId(Integer userId) throws Exception {
+    public List<TweetsDto> findTweetsByUsersId(Integer userId) throws TweetsException {
         List<Tweets> tweets = tweetsRepository.findByUsersId(userId);
 
-        if (tweets.isEmpty()) throw new Exception("No tweets found for this user");
+        if (tweets.isEmpty()) throw new TweetsException("No tweets found for this user");
 
         return tweets.stream().map(tweetsMapper::toDto).toList();
     }
 
-    public TweetsDto updateTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws Exception {
+    public TweetsDto updateTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws TweetsException{
         Tweets tweets = tweetsRepository.findById(id)
-                .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+                .orElseThrow(() -> new TweetsException("Can't find a tweet with this id"));
 
-        if (!tweets.getUsers().getId().equals(userId)) throw new Exception("You can only update your own tweets");
+        if(!tweets.getUsers().getId().equals(userId)) throw new TweetsException("You can only update your own tweets");
         if (tweetsDto.getBanner() != null) tweets.setBanner(tweetsDto.getBanner());
         if (tweetsDto.getText() != null) tweets.setText(tweetsDto.getText());
 
@@ -84,11 +85,11 @@ public class TweetsService {
         return tweetsMapper.toDto(updatedTweet);
     }
 
-    public TweetsDto deleteTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws Exception {
+    public TweetsDto deleteTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws TweetsException {
         Tweets tweets = tweetsRepository.findById(id)
-                .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+                .orElseThrow(() -> new TweetsException("Can't find a tweet with this id"));
 
-        if (!tweets.getUsers().getId().equals(userId)) throw new Exception("You can only delete your own tweets");
+        if(!tweets.getUsers().getId().equals(userId)) throw new TweetsException("You can only delete your own tweets");
 
        tweetsRepository.delete(tweets);
 
@@ -99,12 +100,12 @@ public class TweetsService {
             Integer tweetsId,
             Integer userId,
             TweetsCommentsDTO tweetsCommentsDTO
-    ) throws Exception {
+    ) throws TweetsException {
         Tweets tweets = tweetsRepository.findById(tweetsId)
-               .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+               .orElseThrow(() -> new TweetsException("Can't find a tweet with this id"));
 
         Users users = usersRepository.findById(userId)
-               .orElseThrow(() -> new Exception("Cannot find a user to add a comment"));
+               .orElseThrow(() -> new TweetsException("Cannot find a user to add a comment"));
 
         TweetsComments tweetsComments = tweetsCommentsMapper.toEntity(tweetsCommentsDTO);
         tweetsComments.setTweet(tweets);
@@ -114,10 +115,10 @@ public class TweetsService {
         return tweetsCommentsMapper.toDto(savedComments);
     }
 
-    public List<TweetsCommentsDTO> findAllCommentsByTweetsId(Integer tweetsId) throws Exception {
+    public List<TweetsCommentsDTO> findAllCommentsByTweetsId(Integer tweetsId) throws TweetsException {
         List<TweetsComments> tweetsComments = tweetsCommentsRepository.findByTweetId(tweetsId);
 
-        if (tweetsComments.isEmpty()) throw new Exception("No comments found for this tweet");
+        if (tweetsComments.isEmpty()) throw new TweetsException("No comments found for this tweet");
 
         return tweetsComments.stream().map(tweetsCommentsMapper::toDto).toList();
     }
@@ -126,12 +127,12 @@ public class TweetsService {
             Integer commentId,
             Integer userId,
             TweetsCommentsDTO tweetsCommentsDTO
-    ) throws Exception {
+    ) throws TweetsException {
         TweetsComments tweetsComments = tweetsCommentsRepository.findById(commentId)
-                   .orElseThrow(() -> new Exception("Can't find a comment with this id"));
+                   .orElseThrow(() -> new TweetsException("Can't find a comment with this id"));
 
         if (!tweetsComments.getUsers().getId().equals(userId))
-            throw new Exception("You can only update your own comments");
+            throw new TweetsException("You can only update your own comments");
 
         if(tweetsComments.getText() != null) tweetsComments.setText(tweetsCommentsDTO.getText());
 
@@ -140,15 +141,15 @@ public class TweetsService {
         return tweetsCommentsMapper.toDto(updatedComment);
     }
 
-    public TweetsCommentsDTO deleteComments(Integer tweetsId, Integer commentId, Integer userId) throws Exception {
+    public TweetsCommentsDTO deleteComments(Integer tweetsId, Integer commentId, Integer userId) throws TweetsException {
         Tweets tweets = tweetsRepository.findById(tweetsId)
-                .orElseThrow(() -> new Exception("Can't find a tweet with this id"));
+                .orElseThrow(() -> new TweetsException("Can't find a tweet with this id"));
 
         TweetsComments tweetsComments = tweetsCommentsRepository.findById(commentId)
-                .orElseThrow(() -> new Exception("Can't find a comment with this id"));
+                .orElseThrow(() -> new TweetsException("Can't find a comment with this id"));
 
         if (!tweetsComments.getUsers().getId().equals(userId))
-            throw new Exception("You can only delete your own comments");
+            throw new TweetsException("You can only delete your own comments");
 
         tweetsCommentsRepository.delete(tweetsComments);
 
