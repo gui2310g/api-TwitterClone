@@ -56,5 +56,12 @@ public class UsersController {
         UserDto updatedUser = usersService.updateUser(userDto, userId);
         return ResponseEntity.ok(updatedUser);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<UserDto> deleteUser(UserDto userDto, Authentication authentication) throws Exception {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        UserDto deletedUser = usersService.deleteUser(userDto, userId);
+        return ResponseEntity.ok(deletedUser);
+    }
 }
 

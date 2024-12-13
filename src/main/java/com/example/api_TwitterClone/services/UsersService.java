@@ -3,6 +3,8 @@ package com.example.api_TwitterClone.services;
 import com.example.api_TwitterClone.dto.UserDto;
 import com.example.api_TwitterClone.entities.Users;
 import com.example.api_TwitterClone.mapper.UserMapper;
+import com.example.api_TwitterClone.repositories.TweetsCommentsRepository;
+import com.example.api_TwitterClone.repositories.TweetsRepository;
 import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,5 +77,14 @@ public class UsersService {
         Users updatedUser = usersRepository.save(user);
 
         return userMapper.toDto(updatedUser);
+    }
+
+    public UserDto deleteUser(UserDto userDto, Integer id) throws Exception {
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new Exception("Can't find this user to delete"));
+
+        usersRepository.delete(user);
+
+        return userMapper.toDto(user);
     }
 }

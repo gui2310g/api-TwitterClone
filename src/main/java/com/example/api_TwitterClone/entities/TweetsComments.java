@@ -23,7 +23,7 @@ public class TweetsComments {
     private Users users;
 
     @ManyToOne
-    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "tweet_id", nullable = false)
     private Tweets tweet;
 
     @Temporal(TemporalType.TIMESTAMP)
