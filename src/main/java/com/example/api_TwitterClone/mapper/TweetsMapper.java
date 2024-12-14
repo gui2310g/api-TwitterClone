@@ -10,5 +10,7 @@ public interface TweetsMapper {
     Tweets toEntity(TweetsDto tweetsDTO);
 
     @Mapping(target = "userId", source = "users.id")
+    @Mapping(target = "username", source = "users.username")
+    @Mapping(target = "userAvatar", source = "users.avatar")
     TweetsDto toDto(Tweets tweets);
 }

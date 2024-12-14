@@ -8,4 +8,6 @@ public class TweetsDto {
     private String text;
     private String banner;
     private Integer userId;
+    private String username;
+    private String userAvatar;
 }
