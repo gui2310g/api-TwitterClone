@@ -42,6 +42,13 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/findByAuth")
+    public ResponseEntity<UserDto> findUserByAuth(Authentication authentication) throws UserException {
+        Integer userId = authService.getAuthenticatedUserId(authentication);
+        UserDto user = usersService.findUserByAuth(userId);
+        return ResponseEntity.ok(user);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<UserDto>> searchUsersByUsername(@RequestParam String username) throws UserException {
         List<UserDto> users = usersService.searchUsersByUsername(username);

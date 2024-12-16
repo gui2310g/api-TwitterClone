@@ -8,6 +8,7 @@ import com.example.api_TwitterClone.repositories.TweetsCommentsRepository;
 import com.example.api_TwitterClone.repositories.TweetsRepository;
 import com.example.api_TwitterClone.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,13 @@ public class UsersService {
     }
 
     public UserDto findUserById(Integer id) throws UserException {
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UserException("Could not find user with this id"));
+
+        return userMapper.toDto(user);
+    }
+
+    public UserDto findUserByAuth(Integer id) throws UserException {
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Could not find user with this id"));
 
