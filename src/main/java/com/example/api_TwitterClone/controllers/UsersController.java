@@ -43,9 +43,9 @@ public class UsersController {
     }
 
     @GetMapping("/findByAuth")
-    public ResponseEntity<UserDto> findUserByAuth(Authentication authentication) throws UserException {
+    public ResponseEntity<UserDto> findUserByuserLogged(Authentication authentication) throws UserException {
         Integer userId = authService.getAuthenticatedUserId(authentication);
-        UserDto user = usersService.findUserByAuth(userId);
+        UserDto user = usersService.findUserLogged(userId);
         return ResponseEntity.ok(user);
     }
 

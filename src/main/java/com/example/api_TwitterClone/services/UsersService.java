@@ -53,7 +53,7 @@ public class UsersService {
         return userMapper.toDto(user);
     }
 
-    public UserDto findUserByAuth(Integer id) throws UserException {
+    public UserDto findUserLogged(Integer id) throws UserException {
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Could not find user with this id"));
 

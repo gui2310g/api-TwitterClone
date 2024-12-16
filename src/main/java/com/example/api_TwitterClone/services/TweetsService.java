@@ -72,6 +72,14 @@ public class TweetsService {
         return tweets.stream().map(tweetsMapper::toDto).toList();
     }
 
+    public List<TweetsDto> findTweetsByUserLogged(Integer userId) throws TweetsException {
+        List<Tweets> tweets = tweetsRepository.findByUsersId(userId);
+
+        if (tweets.isEmpty()) throw new TweetsException("No tweets found for this user");
+
+        return tweets.stream().map(tweetsMapper::toDto).toList();
+    }
+
     public TweetsDto updateTweets(TweetsDto tweetsDto, Integer id, Integer userId) throws TweetsException{
         Tweets tweets = tweetsRepository.findById(id)
                 .orElseThrow(() -> new TweetsException("Can't find a tweet with this id"));
