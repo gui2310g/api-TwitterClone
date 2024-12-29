@@ -15,8 +15,11 @@ public class TweetsComments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "text", nullable = false, length = 280)
+    @Column(name = "text", nullable = true, length = 280)
     private String text;
+
+    @Column(name = "banner", nullable = true)
+    private String banner;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

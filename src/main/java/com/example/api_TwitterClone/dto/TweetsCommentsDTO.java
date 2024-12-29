@@ -9,6 +9,7 @@ import java.util.Date;
 public class TweetsCommentsDTO {
     private Integer id;
     private String text;
+    private String banner;
     private Integer userId;
     private Integer tweetId;
 

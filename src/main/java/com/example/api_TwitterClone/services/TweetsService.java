@@ -84,7 +84,7 @@ public class TweetsService {
         Tweets tweets = tweetsRepository.findById(id)
                 .orElseThrow(() -> new TweetsException("Can't find a tweet with this id"));
 
-        if(!tweets.getUsers().getId().equals(userId)) throw new TweetsException("You can only update your own tweets");
+        if (!tweets.getUsers().getId().equals(userId)) throw new TweetsException("You can only update your own tweets");
         if (tweetsDto.getBanner() != null) tweets.setBanner(tweetsDto.getBanner());
         if (tweetsDto.getText() != null) tweets.setText(tweetsDto.getText());
 
@@ -142,7 +142,8 @@ public class TweetsService {
         if (!tweetsComments.getUsers().getId().equals(userId))
             throw new TweetsException("You can only update your own comments");
 
-        if(tweetsComments.getText() != null) tweetsComments.setText(tweetsCommentsDTO.getText());
+        if (tweetsCommentsDTO.getText() != null) tweetsComments.setText(tweetsCommentsDTO.getText());
+        if (tweetsCommentsDTO.getBanner() != null) tweetsComments.setBanner(tweetsCommentsDTO.getBanner());
 
         TweetsComments updatedComment = tweetsCommentsRepository.save(tweetsComments);
 
