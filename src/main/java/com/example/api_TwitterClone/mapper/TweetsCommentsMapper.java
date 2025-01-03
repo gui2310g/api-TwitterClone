@@ -11,6 +11,8 @@ public interface TweetsCommentsMapper {
 
     @Mapping(target = "userId", source = "users.id")
     @Mapping(target = "tweetId", source = "tweet.id")
+    @Mapping(target = "username", source = "users.username")
+    @Mapping(target = "userAvatar", source = "users.avatar")
     TweetsCommentsDTO toDto(TweetsComments tweetsComments);
 }
 

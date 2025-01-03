@@ -12,6 +12,8 @@ public class TweetsCommentsDTO {
     private String banner;
     private Integer userId;
     private Integer tweetId;
+    private String username;
+    private String userAvatar;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date date;
