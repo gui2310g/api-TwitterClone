@@ -1,9 +1,8 @@
-package com.example.api_TwitterClone.services;
+package com.example.api_TwitterClone.security;
 
-import com.example.api_TwitterClone.entities.Users;
-import com.example.api_TwitterClone.config.JwtService;
-import com.example.api_TwitterClone.exceptions.AuthException;
-import com.example.api_TwitterClone.repositories.UsersRepository;
+import com.example.api_TwitterClone.domain.entities.Users;
+import com.example.api_TwitterClone.domain.exceptions.AuthException;
+import com.example.api_TwitterClone.domain.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

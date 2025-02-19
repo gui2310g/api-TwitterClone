@@ -1,7 +1,7 @@
 package com.example.api_TwitterClone.mapper;
 
 import com.example.api_TwitterClone.dto.TweetsCommentsDTO;
-import com.example.api_TwitterClone.entities.TweetsComments;
+import com.example.api_TwitterClone.domain.entities.TweetsComments;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

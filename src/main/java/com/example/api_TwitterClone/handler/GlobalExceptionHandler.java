@@ -1,5 +1,9 @@
-package com.example.api_TwitterClone.exceptions;
+package com.example.api_TwitterClone.handler;
 
+import com.example.api_TwitterClone.domain.exceptions.AuthException;
+import com.example.api_TwitterClone.domain.exceptions.ErrorMessage;
+import com.example.api_TwitterClone.domain.exceptions.TweetsException;
+import com.example.api_TwitterClone.domain.exceptions.UserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

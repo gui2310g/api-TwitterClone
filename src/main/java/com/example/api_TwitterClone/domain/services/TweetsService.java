@@ -1,16 +1,16 @@
-package com.example.api_TwitterClone.services;
+package com.example.api_TwitterClone.domain.services;
 
 import com.example.api_TwitterClone.dto.TweetsCommentsDTO;
 import com.example.api_TwitterClone.dto.TweetsDto;
-import com.example.api_TwitterClone.entities.Tweets;
-import com.example.api_TwitterClone.entities.TweetsComments;
-import com.example.api_TwitterClone.entities.Users;
-import com.example.api_TwitterClone.exceptions.TweetsException;
+import com.example.api_TwitterClone.domain.entities.Tweets;
+import com.example.api_TwitterClone.domain.entities.TweetsComments;
+import com.example.api_TwitterClone.domain.entities.Users;
+import com.example.api_TwitterClone.domain.exceptions.TweetsException;
 import com.example.api_TwitterClone.mapper.TweetsCommentsMapper;
 import com.example.api_TwitterClone.mapper.TweetsMapper;
-import com.example.api_TwitterClone.repositories.TweetsCommentsRepository;
-import com.example.api_TwitterClone.repositories.TweetsRepository;
-import com.example.api_TwitterClone.repositories.UsersRepository;
+import com.example.api_TwitterClone.domain.repositories.TweetsCommentsRepository;
+import com.example.api_TwitterClone.domain.repositories.TweetsRepository;
+import com.example.api_TwitterClone.domain.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

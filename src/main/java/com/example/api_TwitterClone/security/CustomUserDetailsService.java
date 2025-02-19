@@ -1,7 +1,6 @@
-package com.example.api_TwitterClone.services;
+package com.example.api_TwitterClone.security;
 
-import com.example.api_TwitterClone.config.UserAuthenticated;
-import com.example.api_TwitterClone.repositories.UsersRepository;
+import com.example.api_TwitterClone.domain.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

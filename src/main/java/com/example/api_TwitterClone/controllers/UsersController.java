@@ -1,10 +1,9 @@
 package com.example.api_TwitterClone.controllers;
 
 import com.example.api_TwitterClone.dto.UserDto;
-import com.example.api_TwitterClone.entities.Users;
-import com.example.api_TwitterClone.exceptions.UserException;
-import com.example.api_TwitterClone.services.AuthService;
-import com.example.api_TwitterClone.services.UsersService;
+import com.example.api_TwitterClone.domain.exceptions.UserException;
+import com.example.api_TwitterClone.security.AuthService;
+import com.example.api_TwitterClone.domain.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

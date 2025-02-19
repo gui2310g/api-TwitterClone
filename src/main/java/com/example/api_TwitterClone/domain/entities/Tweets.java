@@ -1,4 +1,4 @@
-package com.example.api_TwitterClone.entities;
+package com.example.api_TwitterClone.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

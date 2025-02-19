@@ -1,6 +1,6 @@
-package com.example.api_TwitterClone.config;
+package com.example.api_TwitterClone.security;
 
-import com.example.api_TwitterClone.entities.Users;
+import com.example.api_TwitterClone.domain.entities.Users;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

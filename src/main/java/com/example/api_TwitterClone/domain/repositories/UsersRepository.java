@@ -1,6 +1,6 @@
-package com.example.api_TwitterClone.repositories;
+package com.example.api_TwitterClone.domain.repositories;
 
-import com.example.api_TwitterClone.entities.Users;
+import com.example.api_TwitterClone.domain.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

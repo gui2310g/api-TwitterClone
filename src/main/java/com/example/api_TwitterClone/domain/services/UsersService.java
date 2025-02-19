@@ -1,14 +1,11 @@
-package com.example.api_TwitterClone.services;
+package com.example.api_TwitterClone.domain.services;
 
 import com.example.api_TwitterClone.dto.UserDto;
-import com.example.api_TwitterClone.entities.Users;
-import com.example.api_TwitterClone.exceptions.UserException;
+import com.example.api_TwitterClone.domain.entities.Users;
+import com.example.api_TwitterClone.domain.exceptions.UserException;
 import com.example.api_TwitterClone.mapper.UserMapper;
-import com.example.api_TwitterClone.repositories.TweetsCommentsRepository;
-import com.example.api_TwitterClone.repositories.TweetsRepository;
-import com.example.api_TwitterClone.repositories.UsersRepository;
+import com.example.api_TwitterClone.domain.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +40,7 @@ public class UsersService {
 
         if (users.isEmpty()) throw new UserException("No users found");
 
-        return users.stream().map(userMapper::toDto).toList();
+        return  users.stream().map(userMapper::toDto).toList();
     }
 
     public UserDto findUserById(Integer id) throws UserException {

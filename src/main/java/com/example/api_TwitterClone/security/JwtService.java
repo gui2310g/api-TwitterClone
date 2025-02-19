@@ -1,4 +1,4 @@
-package com.example.api_TwitterClone.config;
+package com.example.api_TwitterClone.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;

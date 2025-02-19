@@ -1,4 +1,4 @@
-package com.example.api_TwitterClone.exceptions;
+package com.example.api_TwitterClone.domain.exceptions;
 
 import java.util.Date;
 
