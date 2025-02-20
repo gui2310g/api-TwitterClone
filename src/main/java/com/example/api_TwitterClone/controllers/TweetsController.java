@@ -1,8 +1,9 @@
 package com.example.api_TwitterClone.controllers;
 
 import com.example.api_TwitterClone.dto.TweetsCommentsDTO;
-import com.example.api_TwitterClone.dto.TweetsDto;
+import com.example.api_TwitterClone.dto.tweets.TweetsRequest;
 import com.example.api_TwitterClone.domain.exceptions.TweetsException;
+import com.example.api_TwitterClone.dto.tweets.TweetsResponse;
 import com.example.api_TwitterClone.security.AuthService;
 import com.example.api_TwitterClone.domain.services.TweetsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,66 +25,50 @@ public class TweetsController {
     private AuthService authService;
 
     @PostMapping
-    public ResponseEntity<TweetsDto> createTweets(
-            @RequestBody TweetsDto tweetsDTO,
-            Authentication authentication
-    ) throws TweetsException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        TweetsDto createdTweet = tweetsService.createTweets(tweetsDTO, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTweet);
+    public ResponseEntity<TweetsResponse> createTweets(@RequestBody TweetsRequest tweetsRequest, Authentication auth) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(tweetsService.createTweets(tweetsRequest, authService.getAuthenticatedUserId(auth)));
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<TweetsDto>> findAllTweets() throws TweetsException {
-        List<TweetsDto> tweets = tweetsService.findAllTweets();
-        return ResponseEntity.ok(tweets);
+    public ResponseEntity<List<TweetsResponse>> findAllTweets() {
+        return ResponseEntity.ok(tweetsService.findAllTweets());
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<TweetsDto> findTweetsById(@PathVariable Integer id) throws TweetsException {
-        TweetsDto tweet = tweetsService.findTweetsById(id);
-        return ResponseEntity.ok(tweet);
+    public ResponseEntity<TweetsResponse> findTweetsById(@PathVariable Integer id)  {
+        return ResponseEntity.ok(tweetsService.findTweetsById(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<TweetsDto>> searchTweets(@RequestParam String text) throws TweetsException {
-        List<TweetsDto> tweets = tweetsService.searchTweets(text);
-        return ResponseEntity.ok(tweets);
+    public ResponseEntity<List<TweetsResponse>> searchTweets(@RequestParam String text)  {
+        return ResponseEntity.ok(tweetsService.searchTweets(text));
     }
 
     @GetMapping("/findByUser/{userId}")
-    public ResponseEntity<List<TweetsDto>> findTweetsByUserId(@PathVariable Integer userId) throws TweetsException {
-        List<TweetsDto> tweets = tweetsService.findTweetsByUsersId(userId);
-        return ResponseEntity.ok(tweets);
+    public ResponseEntity<List<TweetsResponse>> findTweetsByUserId(@PathVariable Integer userId)  {
+        return ResponseEntity.ok(tweetsService.findTweetsByUsersId(userId));
     }
 
     @GetMapping("/findByAuth")
-    public ResponseEntity<List<TweetsDto>> findTweetsByUserLogged(Authentication authentication) throws TweetsException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        List<TweetsDto> tweetsUser = tweetsService.findTweetsByUserLogged(userId);
-        return ResponseEntity.ok(tweetsUser);
+    public ResponseEntity<List<TweetsResponse>> findTweetsByUserLogged(Authentication auth) {
+        return ResponseEntity.ok(tweetsService.findTweetsByUserLogged(authService.getAuthenticatedUserId(auth)));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TweetsDto> updateTweets(
-            @RequestBody TweetsDto tweetsDTO,
+    public ResponseEntity<TweetsResponse> updateTweets(
+            @RequestBody TweetsRequest tweetsRequest,
             @PathVariable Integer id,
             Authentication authentication
     ) throws TweetsException{
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        TweetsDto updatedTweet = tweetsService.updateTweets(tweetsDTO, id, userId);
-        return ResponseEntity.ok(updatedTweet);
+        return ResponseEntity.ok(tweetsService.updateTweets(
+                tweetsRequest, id, authService.getAuthenticatedUserId(authentication)));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<TweetsDto> deleteTweets(
-            TweetsDto tweetsDTO,
-            @PathVariable Integer id,
-            Authentication authentication
-    ) throws TweetsException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        TweetsDto deletedTweet = tweetsService.deleteTweets(tweetsDTO, id, userId);
-        return ResponseEntity.ok(deletedTweet);
+    public ResponseEntity<?> deleteTweets(@PathVariable Integer id, Authentication authentication) {
+        tweetsService.deleteTweets(id, authService.getAuthenticatedUserId(authentication));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/{tweetId}/comments")
@@ -91,18 +76,14 @@ public class TweetsController {
             @PathVariable Integer tweetId,
             @RequestBody TweetsCommentsDTO tweetsComments,
             Authentication authentication
-    ) throws TweetsException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        TweetsCommentsDTO tweetWithComments = tweetsService.addComments(tweetId, userId, tweetsComments);
-        return ResponseEntity.ok(tweetWithComments);
+    ) {
+        return ResponseEntity.ok(tweetsService.addComments(
+                tweetId, authService.getAuthenticatedUserId(authentication), tweetsComments));
     }
 
     @GetMapping("/findAll/{tweetId}/comments")
-    public ResponseEntity<List<TweetsCommentsDTO>> findAllCommentsByTweetsId(
-            @PathVariable Integer tweetId
-    ) throws TweetsException{
-        List<TweetsCommentsDTO> comments = tweetsService.findAllCommentsByTweetsId(tweetId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<TweetsCommentsDTO>> findAllCommentsByTweetsId(@PathVariable Integer tweetId) {
+        return ResponseEntity.ok(tweetsService.findAllCommentsByTweetsId(tweetId));
     }
 
     @PutMapping("/update/{commentId}/comments")
@@ -110,21 +91,19 @@ public class TweetsController {
             @PathVariable Integer commentId,
             @RequestBody TweetsCommentsDTO tweetsComments,
             Authentication authentication
-    ) throws TweetsException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        TweetsCommentsDTO updatedComment = tweetsService.updateComments(commentId, userId, tweetsComments);
-        return ResponseEntity.ok(updatedComment);
+    ) {
+        return ResponseEntity.ok(tweetsService.updateComments(
+                commentId, authService.getAuthenticatedUserId(authentication), tweetsComments));
     }
 
     @DeleteMapping("/{tweetId}/{commentId}/comments")
-    public ResponseEntity<TweetsCommentsDTO> deleteComments(
+    public ResponseEntity<?> deleteComments(
             @PathVariable Integer tweetId,
             @PathVariable Integer commentId,
             Authentication authentication
-    ) throws TweetsException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        TweetsCommentsDTO tweetWithComments = tweetsService.deleteComments(tweetId, commentId, userId);
-        return ResponseEntity.ok(tweetWithComments);
+    ) {
+        tweetsService.deleteComments(tweetId, commentId, authService.getAuthenticatedUserId(authentication);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
     

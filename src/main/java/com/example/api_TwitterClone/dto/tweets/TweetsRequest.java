@@ -1,9 +1,9 @@
-package com.example.api_TwitterClone.dto;
+package com.example.api_TwitterClone.dto.tweets;
 
 import lombok.Data;
 
 @Data
-public class TweetsDto {
+public class TweetsRequest {
     private Integer id;
     private String text;
     private String banner;
