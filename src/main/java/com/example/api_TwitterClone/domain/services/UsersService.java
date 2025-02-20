@@ -1,8 +1,9 @@
 package com.example.api_TwitterClone.domain.services;
 
-import com.example.api_TwitterClone.dto.UserDto;
+import com.example.api_TwitterClone.dto.users.UserRequest;
 import com.example.api_TwitterClone.domain.entities.Users;
 import com.example.api_TwitterClone.domain.exceptions.UserException;
+import com.example.api_TwitterClone.dto.users.UserResponse;
 import com.example.api_TwitterClone.mapper.UserMapper;
 import com.example.api_TwitterClone.domain.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
@@ -21,78 +22,62 @@ public class UsersService {
 
     private final UserMapper userMapper;
 
-    public UserDto createUser(UserDto userDto) throws UserException {
-        if (usersRepository.findByEmail(userDto.getEmail()).isPresent())
-            throw new UserException("This email still exists");
+    public UserResponse createUser(UserRequest dto) {
+        if (usersRepository.findByEmail(dto.getEmail()).isPresent()) throw new UserException("This email still exists");
 
-        if (usersRepository.findByUsername(userDto.getUsername()).isPresent())
+        if (usersRepository.findByUsername(dto.getUsername()).isPresent())
             throw new UserException("This username still exists");
 
-        Users user = userMapper.toEntity(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        Users savedUser = usersRepository.save(user);
+        Users user = userMapper.toEntity(dto);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        return userMapper.toDto(savedUser);
+        return userMapper.toDto(usersRepository.save(user));
     }
 
-    public List<UserDto> findAllUsers() throws UserException {
-        List<Users> users = usersRepository.findAll();
-
-        if (users.isEmpty()) throw new UserException("No users found");
-
-        return  users.stream().map(userMapper::toDto).toList();
+    public List<UserResponse> findAllUsers() throws UserException {
+        return  usersRepository.findAll().stream().map(userMapper::toDto).toList();
     }
 
-    public UserDto findUserById(Integer id) throws UserException {
-        Users user = usersRepository.findById(id)
+    public UserResponse findUserById(Integer id) {
+        return usersRepository.findById(id).map(this::toDto)
                 .orElseThrow(() -> new UserException("Could not find user with this id"));
-
-        return userMapper.toDto(user);
     }
 
-    public UserDto findUserLogged(Integer id) throws UserException {
-        Users user = usersRepository.findById(id)
+    public UserResponse findUserLogged(Integer id) {
+        return usersRepository.findById(id).map(this::toDto)
                 .orElseThrow(() -> new UserException("Could not find user with this id"));
-
-        return userMapper.toDto(user);
     }
 
-    public List<UserDto> searchUsersByUsername(String username) throws UserException {
-        List<Users> users = usersRepository.findByUsernameContainingIgnoreCase(username);
-
-        if (users.isEmpty()) throw new UserException("Could not find users with this username");
-
-        return users.stream().map(userMapper::toDto).toList();
+    public List<UserResponse> searchUsersByUsername(String username) {
+        return usersRepository.findByUsernameContainingIgnoreCase(username).stream().map(this::toDto).toList();
     }
 
-    public UserDto updateUser(UserDto userDto, Integer id) throws UserException {
+    public UserResponse updateUser(UserRequest userRequest, Integer id)  {
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new UserException("Could not find this user to update"));
 
-        if (usersRepository.findByEmail(userDto.getEmail()).isPresent() && !user.getEmail().equals(userDto.getEmail()))
+        if (usersRepository.findByEmail(userRequest.getEmail()).isPresent()
+                && !user.getEmail().equals(userRequest.getEmail()))
             throw new UserException("This email is already in use by another user");
 
-        if (userDto.getUsername() != null) throw new UserException("You can't update the username");
+        if (userRequest.getUsername() != null) throw new UserException("You can't update the username");
 
-        if (userDto.getPassword() != null && passwordEncoder.matches(userDto.getPassword(), user.getPassword()))
+        if (userRequest.getPassword() != null && passwordEncoder.matches(userRequest.getPassword(), user.getPassword()))
             throw new UserException("You are already using this password");
 
-        if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
-        if (userDto.getPassword() != null) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        if (userDto.getAvatar() != null) user.setAvatar(userDto.getAvatar());
-        if (userDto.getBackground() != null) user.setBackground(userDto.getBackground());
+        if (userRequest.getEmail() != null) user.setEmail(userRequest.getEmail());
+        if (userRequest.getPassword() != null) user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        if (userRequest.getAvatar() != null) user.setAvatar(userRequest.getAvatar());
+        if (userRequest.getBackground() != null) user.setBackground(userRequest.getBackground());
 
-        Users updatedUser = usersRepository.save(user);
-
-        return userMapper.toDto(updatedUser);
+        return userMapper.toDto(usersRepository.save(user));
     }
 
-    public UserDto deleteUser(UserDto userDto, Integer id) throws UserException {
-        Users user = usersRepository.findById(id)
-                .orElseThrow(() -> new UserException("Can't find this user to delete"));
-
-        usersRepository.delete(user);
-
-        return userMapper.toDto(user);
+    public void deleteUser(Integer id) {
+        findUserById(id);
+        usersRepository.deleteById(id);
     }
+
+    public UserResponse toDto(Users users) { return userMapper.toDto(users); }
 }
+

@@ -1,7 +1,8 @@
 package com.example.api_TwitterClone.controllers;
 
-import com.example.api_TwitterClone.dto.UserDto;
+import com.example.api_TwitterClone.dto.users.UserRequest;
 import com.example.api_TwitterClone.domain.exceptions.UserException;
+import com.example.api_TwitterClone.dto.users.UserResponse;
 import com.example.api_TwitterClone.security.AuthService;
 import com.example.api_TwitterClone.domain.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,51 +25,39 @@ public class UsersController {
     private AuthService authService;
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) throws UserException {
-        UserDto createdUser = usersService.createUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usersService.createUser(userRequest));
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<UserDto>> findAllUsers() throws UserException {
-        List<UserDto> users = usersService.findAllUsers();
-        return ResponseEntity.ok(users);
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> findAllUsers()  {
+        return ResponseEntity.ok(usersService.findAllUsers());
     }
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable Integer id) throws UserException {
-        UserDto user = usersService.findUserById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponse> findUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(usersService.findUserById(id));
     }
 
     @GetMapping("/findByAuth")
-    public ResponseEntity<UserDto> findUserByuserLogged(Authentication authentication) throws UserException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        UserDto user = usersService.findUserLogged(userId);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponse> findUserByuserLogged(Authentication authentication) {
+        return ResponseEntity.ok(usersService.findUserLogged(authService.getAuthenticatedUserId(authentication)));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserDto>> searchUsersByUsername(@RequestParam String username) throws UserException {
-        List<UserDto> users = usersService.searchUsersByUsername(username);
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserResponse>> searchUsersByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(usersService.searchUsersByUsername(username));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserDto> updateUser(
-            @RequestBody UserDto userDto,
-            Authentication authentication
-    ) throws UserException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        UserDto updatedUser = usersService.updateUser(userDto, userId);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest, Authentication auth)  {
+        return ResponseEntity.ok(usersService.updateUser(userRequest, authService.getAuthenticatedUserId(auth)));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<UserDto> deleteUser(UserDto userDto, Authentication authentication) throws UserException {
-        Integer userId = authService.getAuthenticatedUserId(authentication);
-        UserDto deletedUser = usersService.deleteUser(userDto, userId);
-        return ResponseEntity.ok(deletedUser);
+    public ResponseEntity<?> deleteUser(Authentication authentication) {
+        usersService.deleteUser(authService.getAuthenticatedUserId(authentication));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 

@@ -1,14 +1,15 @@
 package com.example.api_TwitterClone.mapper;
 
-import com.example.api_TwitterClone.dto.UserDto;
+import com.example.api_TwitterClone.dto.users.UserRequest;
 import com.example.api_TwitterClone.domain.entities.Users;
+import com.example.api_TwitterClone.dto.users.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    Users toEntity(UserDto userDto);
+    Users toEntity(UserRequest userRequest);
 
     @Mapping(target = "id", source = "id")
-    UserDto toDto(Users user);
+    UserResponse toDto(Users user);
 }
